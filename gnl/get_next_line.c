@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 15:58:16 by aumoreno          #+#    #+#             */
-/*   Updated: 2024/11/06 19:33:52 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/20 12:13:31 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@ char	*ft_clean_stash(char *stash)
 	if (!aux)
 	{
 		clean_stash = NULL;
-		return (ft_free(&stash));
+		return (ft_free_gnl(&stash));
 	}
 	else
 	{
 		break_pos = (aux - stash) + 1;
 	}
 	if (!stash[break_pos])
-		return (ft_free(&stash));
+		return (ft_free_gnl(&stash));
 	clean_stash = ft_substr_gnl(stash, break_pos, ft_strlen_gnl(stash) - break_pos);
-	ft_free(&stash);
+	ft_free_gnl(&stash);
 	if (!clean_stash)
 		return (NULL);
 	return (clean_stash);
@@ -58,7 +58,7 @@ char	*ft_read_line(int fd, char *stash)
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
-		return (ft_free(&stash));
+		return (ft_free_gnl(&stash));
 	buffer[0] = '\0';
 	bytes_read = 1;
 	while (!ft_strchr_gnl(buffer, '\n') && bytes_read > 0)
@@ -72,11 +72,11 @@ char	*ft_read_line(int fd, char *stash)
 	}
 	free(buffer);
 	if (bytes_read == -1)
-		return (ft_free(&stash));
+		return (ft_free_gnl(&stash));
 	return (stash);
 }
 
-char	*ft_free(char **stash)
+char	*ft_free_gnl(char **stash)
 {
 	free(*stash);
 	*stash = NULL;
@@ -96,7 +96,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = ft_get_new_line(stash);
 	if (!line)
-		return (ft_free(&stash));
+		return (ft_free_gnl(&stash));
 	stash = ft_clean_stash(stash);
 	return (line);
 }

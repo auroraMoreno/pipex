@@ -6,7 +6,7 @@
 #    By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/06 18:33:04 by aumoreno          #+#    #+#              #
-#    Updated: 2024/11/06 19:12:29 by aumoreno         ###   ########.fr        #
+#    Updated: 2025/01/18 11:38:36 by aumoreno         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ EXEC = pipex
 CC = gcc
 CFLAGS = -Werror -Wextra -Wall -fsanitize=address,leak -g3
 
-SRCS = main.c gnl/get_next_line_utils.c gnl/get_next_line.c
+SRCS = main.c error_utils.c gnl/get_next_line_utils.c gnl/get_next_line.c
 
 FT_PRINTF_PATH = ft_printf/
 LIBFT_PATH = libft/

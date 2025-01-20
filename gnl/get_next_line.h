@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:37:26 by aumoreno          #+#    #+#             */
-/*   Updated: 2024/11/06 19:34:08 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/20 12:12:37 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 char	*get_next_line(int fd);
 char	*ft_read_line(int fd, char *stash);
 char	*ft_get_new_line(char *stash);
-char	*ft_free(char **stash);
+char	*ft_free_gnl(char **stash);
 size_t	ft_strlen_gnl(const char *s);
 char	*ft_strjoin_gnl(char *s1, char *s2);
 char	*ft_strchr_gnl(char *s, int c);

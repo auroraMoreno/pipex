@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:37:07 by aumoreno          #+#    #+#             */
-/*   Updated: 2024/11/06 19:33:05 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/20 12:12:47 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	}
 	str = (char *)malloc(sizeof(char) * ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1);
 	if (!str)
-		return (ft_free(&s1));
+		return (ft_free_gnl(&s1));
 	i = -1;
 	while (s1[++i])
 		str[i] = s1[i];
