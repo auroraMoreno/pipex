@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_process_file.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 12:14:57 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/18 13:28:59 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/21 09:43:48 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@
 int main(int argc, char **argv, char **envp)
 {
 
-    printf("%d\n", argc);
+    // printf("%d\n", argc);
 
-    printf("Command-line arguments:\n");
-    for (int i = 0; i < argc; i++)
-    {
-        printf("Argument %d: %s\n", i, argv[i]);
-    }
+    // printf("Command-line arguments:\n");
+    // for (int i = 0; i < argc; i++)
+    // {
+    //     printf("Argument %d: %s\n", i, argv[i]);
+    // }
 
-    printf("Environment variables:\n");
-    for (int i = 0; envp[i] != NULL; i++)
-    {
-        printf("Variable %d: %s\n", i, envp[i]);
-    }
-    return 0;
+    // printf("Environment variables:\n");
+    // for (int i = 0; envp[i] != NULL; i++)
+    // {
+    //     printf("Variable %d: %s\n", i, envp[i]);
+    // }
+    // return 0;
 
     int fd1[2];
     int fd2;

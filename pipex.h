@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 18:33:15 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/20 10:46:04 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/21 17:01:58 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#define READ_END 0
+#define WRITE_END 1
+
 void ft_error(char* err_msg);
-//int ft_check_args_order(char* argv);
 int ft_check_file_permissions(char *infile, char *outfile);
 int ft_check_bin(char *cmd1, char *cmd2, char **envp);
-char *ft_find_path(char **envp);
+char *ft_find_path_variable(char **envp);
 
 
 

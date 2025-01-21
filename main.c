@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 10:14:12 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/20 12:35:36 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/21 17:01:45 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int ft_check_file_permissions(char *infile, char *outfile)
     return (0);
 }
 
-char *ft_find_path(char **envp)
+// cambiar esto a otro fichero que no quede tan pegote 
+char *ft_find_path_variable(char **envp)
 {
     // char *full_path; // malloc?
     int i;
@@ -36,24 +37,24 @@ char *ft_find_path(char **envp)
     return (0);
 }
 
-void ft_show_path_checking(char **path)
-{
-    int i = 0;
+// void ft_show_path_checking(char **path)
+// {
+//     int i = 0;
     
-    // Check if the path array is not NULL
-    if (path == NULL)
-    {
-        printf("Path is NULL\n");
-        return;
-    }
+//     // Check if the path array is not NULL
+//     if (path == NULL)
+//     {
+//         printf("Path is NULL\n");
+//         return;
+//     }
 
-    // Loop through each path and print it
-    while (path[i] != NULL)
-    {
-        printf("Path[%d]: %s\n", i, path[i]);
-        i++;
-    }
-}
+//     // Loop through each path and print it
+//     while (path[i] != NULL)
+//     {
+//         printf("Path[%d]: %s\n", i, path[i]);
+//         i++;
+//     }
+// }
 
 // ESTO IMPORTANTE HACER UN MÉTODO QUE CHECK EL PATH DEL COMANDO porq si no no simepre se guardan en el mismo sitio
 int ft_check_bin(char *cmd1, char *cmd2, char **envp)
@@ -65,7 +66,7 @@ int ft_check_bin(char *cmd1, char *cmd2, char **envp)
     // IMPORTANTE SEPARAR LOS PROGRAMAS DEL RESTO DE SUS ARGS
 
     // el valor de path lo vamos a recuperar directamente de envp[] del PATH variable
-    path = ft_split(ft_find_path(envp), ':');
+    path = ft_split(ft_find_path_variable(envp), ':');
     ft_show_path_checking(path);
     if(!path)
         return(-1);
@@ -123,6 +124,7 @@ int main(int argc, char **argv, char **envp)
     int i;
 
     // check que argc no pasa de 5
+    // revisar tema orden de los argumentos 
     if (argc == 5)
     {
         printf("There is 5 args. Let's begin\n");
@@ -173,7 +175,7 @@ int main(int argc, char **argv, char **envp)
         // una vez todos estos checks ya programa en sí
         ft_printf("todo guay, lets pipe\n");
         // empezariamos con crear el pipe y el primer hijo
-
+        ft_creating_processes(argv, envp);
         // el infile => dup del stdin? + infile para fd intercambiable. CREO QUE NO HACE FALTA porq lo lee del fichero no sé es raro jeje
         // habria que pasarlo al execve como arg normal, no hace falta dup para este primero
 
