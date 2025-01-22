@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 10:14:12 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/21 17:01:45 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:06:08 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int ft_check_bin(char *cmd1, char *cmd2, char **envp)
 
     // el valor de path lo vamos a recuperar directamente de envp[] del PATH variable
     path = ft_split(ft_find_path_variable(envp), ':');
-    ft_show_path_checking(path);
+    //ft_show_path_checking(path);
     if(!path)
         return(-1);
     
@@ -81,7 +81,7 @@ int ft_check_bin(char *cmd1, char *cmd2, char **envp)
     {
         path_cmd1 = ft_strjoin(path[i], cmd1);
         if (access(path_cmd1, F_OK) == -1 || access(path_cmd1, X_OK) == -1)
-            break;
+            break; // cambiamos esto a que devuelva el path del cmd1 
         free(path_cmd1);
         path_cmd1 = NULL;
         i++;
@@ -89,14 +89,14 @@ int ft_check_bin(char *cmd1, char *cmd2, char **envp)
     if(!path_cmd1)
         return(-1);
     
-    // we do the same with cmd2
+    // we do the same with cmd2 SUSTITUIR POR UNA FUNCION MEJOR 
     path_cmd2 = NULL;
     i = 0; 
     while(path[i])
     {
         path_cmd2 = ft_strjoin(path[i], cmd2);
         if (access(path_cmd2, F_OK) == -1 || access(path_cmd2, X_OK) == -1)
-            break;
+            break; // cambiamos esto a que devuelva el path del cmd2 
         free(path_cmd2);
         path_cmd2 = NULL;
         i++;
@@ -116,12 +116,47 @@ int ft_check_bin(char *cmd1, char *cmd2, char **envp)
     return (0);
 }
 
+/*le va a llegar el comando, llamamos al método find_path_var*/
+/*se podria modifica el hecho de llamar tantas veces a find_path pero esto es el first draft so n e way we'll see*/
+char *ft_find_cmd_paths(char *cmd, char **envp)
+{
+    char **path_variable;
+    char *full_cmd_path;
+    int i;
+    
+    path_variable = ft_split(ft_find_path_variable(envp), ':');
+    full_cmd_path = NULL;
+    
+    i = 0;
+    while(cmd[i])
+    {
+        full_cmd_path = ft_strjoin(path_variable[i],cmd);
+        if (access(full_cmd_path, F_OK) == 0 && access(full_cmd_path, X_OK) == 0)
+            break;
+        free(full_cmd_path);
+        full_cmd_path = NULL;
+        i++;
+    }
+    if(!full_cmd_path)
+        return(0);
+
+    //vamos a hacer el free pero esto lo sustituiré por una función
+    i = 0;  
+    while(path_variable[i])
+        free(path_variable[i++]);
+    free(path_variable);
+
+    return (full_cmd_path);
+    
+}
+
 int main(int argc, char **argv, char **envp)
 {
 
     char **cmd1;
     char **cmd2;
-    int i;
+    char **cmd_paths; // 0 => cmd1; 1 => cmd2
+    int i; // esta variable se va a ir igualmente porq es para el free asi que eso lo haremos en un método a parte 
 
     // check que argc no pasa de 5
     // revisar tema orden de los argumentos 
@@ -170,12 +205,22 @@ int main(int argc, char **argv, char **envp)
             */
             ft_error("Bin does not exist or does not have the right permissions\n");
         }
+        
         printf("EL binario existe y tiene los permisos necesarios.\n");
 
         // una vez todos estos checks ya programa en sí
         ft_printf("todo guay, lets pipe\n");
+
+        /*vamos a recuperar los paths de los comando con la full route de donde está su fichero bin*/
+        /*luego modificaremos para que no haya tantas llamadas a funciones q podriamos modfiicar para reusarlas o hacer 
+        todo del tiron en el check bin*/
+        cmd_paths = ft_calloc(sizeof(char *), 2);
+        //HACER FREE DE ESTO BABY 
+        cmd_paths[0] = ft_find_cmd_paths(cmd1[0], envp); //cmd1
+        cmd_paths[1] = ft_find_cmd_paths(cmd2[0],envp);//cmd2
+        
         // empezariamos con crear el pipe y el primer hijo
-        ft_creating_processes(argv, envp);
+        ft_creating_processes(argv, envp, cmd_paths);
         // el infile => dup del stdin? + infile para fd intercambiable. CREO QUE NO HACE FALTA porq lo lee del fichero no sé es raro jeje
         // habria que pasarlo al execve como arg normal, no hace falta dup para este primero
 
@@ -183,7 +228,7 @@ int main(int argc, char **argv, char **envp)
 
         // finalmente ver main file process para pintar el output de cmd2 al fichero outfile
 
-        // hacemos los frees colegaa que si no da tremendo leakkkk HCER MÉTODO
+        // hacemos los frees colegaa que si no da tremendo leakkkk HACER MÉTODO QUE ME HAGA EL FREE DE ESTO
             if(cmd1)
             {
                 i = 0;
@@ -204,6 +249,14 @@ int main(int argc, char **argv, char **envp)
                     i++;
                 }
                 free(cmd2);
+            }
+
+            if(cmd_paths)
+            {
+                i = 0;
+                while(cmd_paths[i])
+                    free(cmd_paths[i++]);
+                free(cmd_paths);
             }
 
     }
