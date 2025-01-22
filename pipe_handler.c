@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 10:35:56 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/22 14:14:07 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/22 17:51:08 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 // in argv we have the commands to execute so we can get them from there.
 void ft_handle_child(int* fd, char** argv, char* cmd_path, char** envp) //vamos a suponer que full_path está bien y luego haré el metodo para arreglarlo bien 
 {
-    ft_printf("Printing path:%s\n"); // está printing un path to raro porq la memoria está haciendo lo que quiere
+    ft_printf("Printing path:%s\n", cmd_path); // está printing un path to raro porq la memoria está haciendo lo que quiere
     // quizá si hago el metodo abstracto i can actually re use it for the checking 
     int infile_fd;
     char** cmd1; 
@@ -124,8 +124,9 @@ void ft_handle_parent(int* fd, char** argv, char* cmd_path, char** envp)
 }
 
 
-void ft_creating_processes(char** argv, char** envp, char **cmd_paths)
+int ft_creating_processes(char** argv, char** envp, char **cmd_paths)
 {
+    ft_printf("Comencemos con la creación.\n");
     int fd1[2]; // para el hijo CAMBIARLE EL NOMBRE AL FD1
     //int fd2[2]; // para el padre si solo hay un pipe no me hace falta porq uso el fd1
     int status;
@@ -159,4 +160,6 @@ void ft_creating_processes(char** argv, char** envp, char **cmd_paths)
     /*hacemos los wait de los hijos*/
     waitpid(pid,&status, WNOHANG);
     waitpid(pid,&status, WNOHANG);
+
+    return(status);
 }

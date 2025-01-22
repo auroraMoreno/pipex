@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 18:33:15 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/22 11:55:57 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/22 17:50:33 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@ int ft_check_file_permissions(char *infile, char *outfile);
 int ft_check_bin(char *cmd1, char *cmd2, char **envp);
 char *ft_find_path_variable(char **envp);
 char *ft_find_cmd_paths(char *cmd, char **envp);
-void ft_creating_processes(char** argv, char** envp, char **cmd_paths);
+int ft_creating_processes(char** argv, char** envp, char **cmd_paths);
 void ft_handle_child(int* fd, char** argv, char* cmd_path, char** envp);
-
-
+char *ft_format_path(char *path, char *cmd);
 
 
 

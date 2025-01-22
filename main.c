@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 10:14:12 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/22 14:06:08 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/22 17:43:25 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,46 @@ char *ft_find_path_variable(char **envp)
     return (0);
 }
 
-// void ft_show_path_checking(char **path)
-// {
-//     int i = 0;
+void ft_show_path_checking(char **path)
+ {
+     int i = 0;
     
-//     // Check if the path array is not NULL
-//     if (path == NULL)
-//     {
-//         printf("Path is NULL\n");
-//         return;
-//     }
+   // Check if the path array is not NULL
+    if (path == NULL)
+    {
+        printf("Path is NULL\n");
+        return;
+    }
 
-//     // Loop through each path and print it
-//     while (path[i] != NULL)
-//     {
-//         printf("Path[%d]: %s\n", i, path[i]);
-//         i++;
-//     }
-// }
+    //Loop through each path and print it
+    while (path[i] != NULL)
+    {
+        printf("Path[%d]: %s\n", i, path[i]);
+        i++;
+    }
+}
+char *ft_format_path(char *path, char *cmd)
+{
+    char *formatted_path;
+    char *aux;
+
+    // si el fichero es un simple exe
+    //kk de esto que hay que cambiar pero ya hoy paso, esq cuando salga de este metodo 
+    //va a literlamente hacer el mismo check que estoy haciendo aqui abajo 
+    //lolete 
+    if(access(cmd, F_OK) == 0 && access(cmd, X_OK) == 0)
+    {
+        // si es sin más un ejecutable pues sin mas devolvemos el puntero
+        // no hay problema de aloc y de leaks porq estoy haciendo aloc en split y free en main 
+        return (cmd);
+    }
+
+    aux = ft_strjoin(path, "/");
+    formatted_path = ft_strjoin(aux, cmd);
+    free(aux);
+    return (formatted_path);
+    
+}
 
 // ESTO IMPORTANTE HACER UN MÉTODO QUE CHECK EL PATH DEL COMANDO porq si no no simepre se guardan en el mismo sitio
 int ft_check_bin(char *cmd1, char *cmd2, char **envp)
@@ -64,7 +86,7 @@ int ft_check_bin(char *cmd1, char *cmd2, char **envp)
     char *path_cmd2;
     int i;
     // IMPORTANTE SEPARAR LOS PROGRAMAS DEL RESTO DE SUS ARGS
-
+    //ft_printf("Printing cmd1: %s\n", cmd2);
     // el valor de path lo vamos a recuperar directamente de envp[] del PATH variable
     path = ft_split(ft_find_path_variable(envp), ':');
     //ft_show_path_checking(path);
@@ -79,23 +101,28 @@ int ft_check_bin(char *cmd1, char *cmd2, char **envp)
     i = 0; 
     while(path[i])
     {
-        path_cmd1 = ft_strjoin(path[i], cmd1);
-        if (access(path_cmd1, F_OK) == -1 || access(path_cmd1, X_OK) == -1)
+        //path_cmd1 = ft_strjoin(path[i], cmd1);
+        path_cmd1 = ft_format_path(path[i], cmd1); // esto tecnicamente devuelve el path asi: routa_larga/comando
+        ft_printf("Printing joined path prior to checking: %s\n", path_cmd1);
+        
+        if (access(path_cmd1, F_OK) == 0 && access(path_cmd1, X_OK) == 0)
             break; // cambiamos esto a que devuelva el path del cmd1 
         free(path_cmd1);
         path_cmd1 = NULL;
         i++;
     }
+    ft_printf("Printing joined path: %s\n", path_cmd1);
     if(!path_cmd1)
         return(-1);
-    
     // we do the same with cmd2 SUSTITUIR POR UNA FUNCION MEJOR 
     path_cmd2 = NULL;
     i = 0; 
     while(path[i])
     {
-        path_cmd2 = ft_strjoin(path[i], cmd2);
-        if (access(path_cmd2, F_OK) == -1 || access(path_cmd2, X_OK) == -1)
+        //path_cmd2 = ft_strjoin(path[i], cmd2);
+        path_cmd2 = ft_format_path(path[i], cmd2); // esto tecnicamente devuelve el path asi: routa_larga/comando
+        ft_printf("Printing joined path prior to checking: %s\n", path_cmd2);
+        if (access(path_cmd2, F_OK) == 0 && access(path_cmd2, X_OK) == 0)
             break; // cambiamos esto a que devuelva el path del cmd2 
         free(path_cmd2);
         path_cmd2 = NULL;
@@ -103,7 +130,7 @@ int ft_check_bin(char *cmd1, char *cmd2, char **envp)
     }
     if(!path_cmd2)
         return(-1);
-    
+    ft_printf("Printing joined path: %s\n", path_cmd2);
     // free: path, path_cmd1, path_cdm2
     i = 0;
     while(path[i])
@@ -115,6 +142,8 @@ int ft_check_bin(char *cmd1, char *cmd2, char **envp)
 
     return (0);
 }
+
+
 
 /*le va a llegar el comando, llamamos al método find_path_var*/
 /*se podria modifica el hecho de llamar tantas veces a find_path pero esto es el first draft so n e way we'll see*/
@@ -128,9 +157,9 @@ char *ft_find_cmd_paths(char *cmd, char **envp)
     full_cmd_path = NULL;
     
     i = 0;
-    while(cmd[i])
+    while(path_variable[i])
     {
-        full_cmd_path = ft_strjoin(path_variable[i],cmd);
+        full_cmd_path = ft_format_path(path_variable[i],cmd);
         if (access(full_cmd_path, F_OK) == 0 && access(full_cmd_path, X_OK) == 0)
             break;
         free(full_cmd_path);
@@ -192,7 +221,7 @@ int main(int argc, char **argv, char **envp)
         printf("Tiene los permisos necesarios.\n");
         // guardar en cmd 1 y cmd 2 los args que sean comandos: 3 y 4 para luego checkarlos
         // ls -l SOLO COGER ls
-        cmd1 = ft_split(argv[2], ' ');
+        cmd1 = ft_split(argv[2], ' '); // aqui estoy haciendo los alocs 
         cmd2 = ft_split(argv[3], ' ');
         // check binario del comando existe (creo que sé pero no estoy segura)
         if (ft_check_bin(cmd1[0], cmd2[0], envp) == -1) // use access too??
@@ -217,7 +246,11 @@ int main(int argc, char **argv, char **envp)
         cmd_paths = ft_calloc(sizeof(char *), 2);
         //HACER FREE DE ESTO BABY 
         cmd_paths[0] = ft_find_cmd_paths(cmd1[0], envp); //cmd1
+        ft_printf("Printing FINAL CMD1: %s\n", cmd_paths[0]);
+
         cmd_paths[1] = ft_find_cmd_paths(cmd2[0],envp);//cmd2
+        ft_printf("Printing FINAL CMD2: %s\n", cmd_paths[1]);
+
         
         // empezariamos con crear el pipe y el primer hijo
         ft_creating_processes(argv, envp, cmd_paths);
@@ -251,14 +284,16 @@ int main(int argc, char **argv, char **envp)
                 free(cmd2);
             }
 
-            if(cmd_paths)
-            {
-                i = 0;
-                while(cmd_paths[i])
-                    free(cmd_paths[i++]);
-                free(cmd_paths);
-            }
-
+            // if(cmd_paths)
+            // {
+            //     i = 0;
+            //     while(cmd_paths[i])
+            //         free(cmd_paths[i++]);
+            //     free(cmd_paths);
+            // }
+        free(cmd_paths[0]);
+        free(cmd_paths[1]);
+        free(cmd_paths);
     }
     else
     {
