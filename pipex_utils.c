@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_testing_stuff.c                               :+:      :+:    :+:   */
+/*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/18 13:23:41 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/18 13:26:15 by aumoreno         ###   ########.fr       */
+/*   Created: 2025/01/23 11:26:01 by aumoreno          #+#    #+#             */
+/*   Updated: 2025/01/23 11:28:52 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
+#include "pipex.h"
 
-int main(int argc, char **argv, char **envp)
+void ft_free_cmds(char **cmd_to_free)
 {
-    printf("%d\n", argc);
-
-    printf("Command-line arguments:\n");
-    for (int i = 0; i < argc; i++)
+    int i;
+    if(cmd_to_free)
     {
-        printf("Argument %d: %s\n", i, argv[i]);
+        i = 0;
+        while (cmd_to_free[i])
+        {
+            free(cmd_to_free[i]);
+            i++;
+        }
+        free(cmd_to_free);
     }
-
-    printf("Environment variables:\n");
-    for (int i = 0; envp[i] != NULL; i++)
-    {
-        printf("Variable %d: %s\n", i, envp[i]);
-    }
-    return 0;
 }
