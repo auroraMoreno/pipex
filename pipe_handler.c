@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 10:35:56 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/24 12:28:16 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/24 12:44:43 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,10 @@ void	ft_handle_parent(int *fd, char **argv, char *cmd_path, char **envp)
 		dup2(outfile_fd, STDOUT_FILENO);
 		if (execve(cmd_path, cmd2, envp) < 0)
 			ft_error("Error executing process: ");
-		ft_free_cmds(cmd2);
 	}
 	else
-	{
 		close(fd[READ_END]);
-		ft_free_cmds(cmd2);
-	}
+	ft_free_cmds(cmd2);
 }
 
 int	ft_creating_processes(char **argv, char **envp, char **cmd_paths)
