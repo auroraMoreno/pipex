@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 11:26:01 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/23 14:08:31 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/24 11:25:55 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,11 @@ void	ft_free_cmds(char **cmd_to_free)
 		}
 		free(cmd_to_free);
 	}
+}
+
+void	ft_free_paths(char **paths)
+{
+	free(paths[0]);
+	free(paths[1]);
+	free(paths);
 }

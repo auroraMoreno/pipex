@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 10:35:56 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/23 13:50:54 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/24 11:14:27 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ void	ft_handle_child(int *fd, char **argv, char *cmd_path, char **envp)
 	close(fd[READ_END]);
 	infile_fd = open(infile_path, O_RDONLY);
 	if (infile_fd == -1)
-		ft_error("Error in opening infile.");
+		ft_error("Error in opening file: ");
 	dup2(infile_fd, STDIN_FILENO);
 	close(infile_fd);
 	dup2(fd[WRITE_END], STDOUT_FILENO);
 	close(fd[WRITE_END]);
 	if (execve(cmd_path, cmd1, envp) < 0)
-		ft_error("Error in the child process exec.");
+		ft_error("Error executing process: ");
 	ft_free_cmds(cmd1);
 }
 
@@ -45,17 +45,17 @@ void	ft_handle_parent(int *fd, char **argv, char *cmd_path, char **envp)
 	pid = fork();
 	close(fd[WRITE_END]);
 	if (pid == -1)
-		ft_error("Error in second process fork.");
+		ft_error("Error creating process: ");
 	else if (pid == 0)
 	{
 		outfile_fd = open(outfile_path, O_WRONLY | O_APPEND | O_TRUNC);
 		if (outfile_fd == -1)
-			ft_error("Error in opening the outfile.");
+			ft_error("Error in opening file: ");
 		dup2(fd[READ_END], STDIN_FILENO);
 		close(fd[READ_END]);
 		dup2(outfile_fd, STDOUT_FILENO);
 		if (execve(cmd_path, cmd2, envp) < 0)
-			ft_error("Error in exe the second.");
+			ft_error("Error executing process: ");
 		ft_free_cmds(cmd2);
 	}
 	else
@@ -69,10 +69,10 @@ int	ft_creating_processes(char **argv, char **envp, char **cmd_paths)
 	int		status;
 
 	if (pipe(fd1) == -1)
-		ft_error("Error creating pipe.");
+		ft_error("Error creating pipe: ");
 	pid = fork();
 	if (pid == -1)
-		ft_error("Error creating the child.");
+		ft_error("Error creating process: ");
 	else if (pid == 0)
 		ft_handle_child(fd1, argv, cmd_paths[0], envp);
 	else
