@@ -6,48 +6,40 @@
 #    By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/06 18:33:04 by aumoreno          #+#    #+#              #
-#    Updated: 2025/01/23 14:24:47 by aumoreno         ###   ########.fr        #
+#    Updated: 2025/01/24 11:57:56 by aumoreno         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 EXEC = pipex
 
-CC = gcc
-CFLAGS = -Werror -Wextra -Wall -fsanitize=address,leak -g3
+SRCS = main.c error_utils.c pipe_handler.c pipex_utils.c
 
-SRCS = main.c pipe_handler.c pipex_utils.c error_utils.c
-
-FT_PRINTF_PATH = ft_printf/
 LIBFT_PATH = libft/
 
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address,leak -g3  -O
+RM = rm -f
+
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(FT_PRINTF_PATH)
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(LIBFT_PATH)
-	$(CC) $(CFLAGS) -c -o $@ $< $(INCLUDES)
-          
-OBJS = $(SRCS:.c=.o)
+	@$(CC) $(CFLAGS) -c $< -o $@ -I $(LIBFT_PATH)
 
-
-all : $(EXEC)
+OBJS = ${SRCS:.c=.o}
 
 $(EXEC): $(OBJS)
-
-$(EXEC): $(OBJS)
-	@make -C $(FT_PRINTF_PATH) --silent
 	@make -C $(LIBFT_PATH) --silent
-	@$(CC) $(CFLAGS) $(SRCS) -o $(EXEC) -I./libft -L./libft -lft -I./ft_printf -L./ft_printf -l ftprintf
+	@$(CC) $(CFLAGS) ${SRCS} -o $(EXEC)  -I./libft -L./libft -lft
 
+all: $(EXEC)
 
 clean:
-	rm -f $(OBJS)
-	@make -C $(FT_PRINTF_PATH) clean --silent
+	@$(RM) $(OBJS)
+	@make -C $(LIBFT_PATH) clean --silent
 
 fclean:  clean
-	rm -f $(EXEC)
-	rm -f $(OBJS)
-	@make -C $(FT_PRINTF_PATH) fclean --silent
+	@$(RM) $(EXEC)
+	@$(RM) $(OBJS)
 	@make -C $(LIBFT_PATH) fclean --silent
-
+	
 re: fclean all
 
-.PHONY: all clean fclean re 
+.PHONY: all clean fclean re

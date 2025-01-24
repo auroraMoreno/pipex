@@ -6,14 +6,13 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 18:33:15 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/24 11:25:27 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/24 11:55:16 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 # include "libft/libft.h"
-# include "ft_printf/ft_printf.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <string.h>

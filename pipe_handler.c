@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 10:35:56 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/24 11:14:27 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/01/24 12:28:16 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_handle_child(int *fd, char **argv, char *cmd_path, char **envp)
 	infile_path = argv[1];
 	cmd1 = ft_split(argv[2], ' ');
 	close(fd[READ_END]);
-	infile_fd = open(infile_path, O_RDONLY);
+	infile_fd = open(infile_path, O_RDONLY, 0777);
 	if (infile_fd == -1)
 		ft_error("Error in opening file: ");
 	dup2(infile_fd, STDIN_FILENO);
@@ -48,7 +48,7 @@ void	ft_handle_parent(int *fd, char **argv, char *cmd_path, char **envp)
 		ft_error("Error creating process: ");
 	else if (pid == 0)
 	{
-		outfile_fd = open(outfile_path, O_WRONLY | O_APPEND | O_TRUNC);
+		outfile_fd = open(outfile_path, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 		if (outfile_fd == -1)
 			ft_error("Error in opening file: ");
 		dup2(fd[READ_END], STDIN_FILENO);
@@ -59,7 +59,10 @@ void	ft_handle_parent(int *fd, char **argv, char *cmd_path, char **envp)
 		ft_free_cmds(cmd2);
 	}
 	else
+	{
 		close(fd[READ_END]);
+		ft_free_cmds(cmd2);
+	}
 }
 
 int	ft_creating_processes(char **argv, char **envp, char **cmd_paths)
