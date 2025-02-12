@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 18:33:15 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/02/12 11:54:28 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/02/12 12:41:41 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@
 #  define ERROR_EXE "Error in executng commands.\n"
 # endif
 
+int		main(int argc, char **argv, char **envp);
 char	*ft_check_bin(char *cmd, char **envp);
 char	*ft_find_path_variable(char **envp);
 char	*ft_find_cmd_paths(char *cmd, char **envp);
