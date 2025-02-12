@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 11:26:01 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/01/24 11:25:55 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:58:34 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,27 @@ void	ft_free_cmds(char **cmd_to_free)
 {
 	int	i;
 
-	if (cmd_to_free)
+	i = 0;
+	while (cmd_to_free[i])
 	{
-		i = 0;
-		while (cmd_to_free[i])
-		{
-			free(cmd_to_free[i]);
-			i++;
-		}
-		free(cmd_to_free);
+		free(cmd_to_free[i]);
+		i++;
 	}
+	free(cmd_to_free);
 }
 
 void	ft_free_paths(char **paths)
 {
-	free(paths[0]);
-	free(paths[1]);
+	if (paths[0])
+		free(paths[0]);
+	if (paths[1])
+		free(paths[1]);
 	free(paths);
+}
+
+void	ft_free_both_cmd(char **cmd1, char **cmd2)
+{
+	ft_free_cmds(cmd1);
+	ft_free_cmds(cmd2);
+	ft_error("Error getting the command.\n");
 }
