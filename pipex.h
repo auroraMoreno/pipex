@@ -6,7 +6,7 @@
 /*   By: aumoreno < aumoreno@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 18:33:15 by aumoreno          #+#    #+#             */
-/*   Updated: 2025/02/12 11:00:56 by aumoreno         ###   ########.fr       */
+/*   Updated: 2025/02/12 11:54:28 by aumoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_free_paths(char **paths);
 int		ft_free_main(char	**cmd1, char **cmd2, char **cmd_paths);
 void	ft_free_both_cmd(char **cmd1, char **cmd2);
 void	ft_error(char *err_msg);
-void	ft_cmd_error(char *cmd, char **cmd_paths, char **cmd1, char **cmd2);
+void	ft_cmd_error(char **cmd_paths, char **cmd1, char **cmd2);
 void	ft_process_error(char *msg, char **paths, int error_code);
 void	ft_file_error(char *msg, char **cmd, char *cmd_path);
 void	ft_args_error(void);
